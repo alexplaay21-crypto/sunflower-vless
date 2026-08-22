@@ -19,7 +19,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.StarBorder
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -160,7 +160,7 @@ private fun ServerRow(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 IconButton(onClick = onToggleFavorite) {
                     Icon(
-                        if (server.isFavorite) Icons.Filled.Star else Icons.Filled.StarBorder,
+                        if (server.isFavorite) Icons.Filled.Star else Icons.Filled.Star,
                         contentDescription = stringResource(
                             if (server.isFavorite) R.string.favorite_remove else R.string.favorite_add,
                         ),
