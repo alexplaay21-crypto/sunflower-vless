@@ -1,0 +1,9 @@
+<resources>
+    <!-- Реальная тема живёт в Compose (ui/theme/Theme.kt, SunflowerTheme).
+         Этот XML-стиль нужен только для манифеста и фона окна до того,
+         как Compose отрисует контент — держим его максимально простым. -->
+    <style name="Theme.Sunflower" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">#0E0F13</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+</resources>

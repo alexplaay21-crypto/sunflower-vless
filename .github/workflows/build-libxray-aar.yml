@@ -1,0 +1,77 @@
+name: Build libXray AAR (experimental)
+
+# ЭКСПЕРИМЕНТАЛЬНЫЙ workflow, ОТДЕЛЬНЫЙ от основной сборки приложения
+# (build.yml). Основной APK НЕ зависит от результата этого джоба:
+# LibXrayBridge.callGeneratedBinding() пока явно бросает исключение вместо
+# вызова реального класса, поэтому app компилируется без .aar. Запускается
+# только вручную (workflow_dispatch), чтобы не гонять на каждый push
+# заведомо экспериментальный шаг.
+#
+# ЧТО ЗДЕСЬ НЕ ПОДТВЕРЖДЕНО (первое, что смотреть, если джоб упадёт —
+# в отличие от build.yml, этот файл НЕ прошёл такую же проверку):
+#   1. Версия Android NDK ниже (NDK_VERSION) — не сверена с реальными
+#      требованиями build/main.py, содержимое которого не получилось
+#      прочитать через веб-поиск.
+#   2. Какие именно env-переменные читает build/main.py. ANDROID_HOME /
+#      ANDROID_NDK_HOME — практически универсальная конвенция для таких
+#      Python/Go-скриптов (так делают Matter, Magisk и другие открытые
+#      Android+NDK проекты), но это конвенция по аналогии, а не факт,
+#      проверенный по исходнику именно этого скрипта.
+#   3. Версия golang.org/x/mobile/cmd/gomobile — ставится как @latest;
+#      если go.mod репозитория пинит другую версию, возможен конфликт
+#      (см. пример go-скрипта у сторонних форков, использующих версию
+#      из go.mod, а не latest).
+#
+# Результат при успехе — .aar как build artifact для скачивания и ручной
+# проверки. Подключение в app/build.gradle.kts (implementation(files(...)))
+# и раскомментирование реального вызова в LibXrayBridge — отдельный шаг
+# ПОСЛЕ того, как этот джоб хотя бы раз пройдёт зелёным.
+
+on:
+  workflow_dispatch:
+
+env:
+  NDK_VERSION: "27.0.12077973"
+
+jobs:
+  build-aar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout libXray source
+        uses: actions/checkout@v4
+        with:
+          repository: XTLS/libXray
+          path: libxray-src
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: stable
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android NDK
+        run: sdkmanager --install "ndk;${{ env.NDK_VERSION }}"
+
+      - name: Install gomobile
+        run: |
+          go install golang.org/x/mobile/cmd/gomobile@latest
+          gomobile init
+
+      - name: Build Android AAR
+        working-directory: libxray-src
+        run: |
+          export ANDROID_NDK_HOME="$ANDROID_HOME/ndk/${{ env.NDK_VERSION }}"
+          python3 build/main.py android
+
+      - name: List produced artifacts
+        working-directory: libxray-src
+        run: find . -name "*.aar" -exec ls -la {} \;
+
+      - name: Upload AAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: libxray-aar
+          path: libxray-src/**/*.aar
+          if-no-files-found: error

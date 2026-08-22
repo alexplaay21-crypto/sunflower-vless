@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- Отдельного uses-permission для VPN не нужно: BIND_VPN_SERVICE ниже
+         на самом <service> ограничивает, кто может к нему привязаться,
+         а согласие пользователя на VPN — через VpnService.prepare(),
+         это intent-based системный диалог, не manifest-разрешение. -->
+
+    <application
+        android:name=".SunflowerApp"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Sunflower">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.Sunflower">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- Пункт 35 промта: deep links для vless/vmess/trojan/ss.
+                 android:host не указан — у этих схем нет единого host,
+                 значение после "://" сразу трактуется как userInfo/адрес
+                 (см. VlessUriParser и т.п.), поэтому фильтр по scheme без host. -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="vless" />
+                <data android:scheme="vmess" />
+                <data android:scheme="trojan" />
+                <data android:scheme="ss" />
+            </intent-filter>
+        </activity>
+
+        <!-- Отключаем стандартную автоинициализацию WorkManager через
+             androidx-startup: конфигурация с HiltWorkerFactory ставится
+             вручную в SunflowerApp (Configuration.Provider). Некоторые
+             версии WorkManager определяют Configuration.Provider
+             автоматически и это исключение не обязательно — оставлено
+             как более надёжный, явный вариант. -->
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+        </provider>
+
+        <service
+            android:name=".tunnel.SunflowerVpnService"
+            android:exported="false"
+            android:permission="android.permission.BIND_VPN_SERVICE">
+            <intent-filter>
+                <action android:name="android.net.VpnService" />
+            </intent-filter>
+        </service>
+
+    </application>
+
+</manifest>

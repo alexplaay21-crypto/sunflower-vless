@@ -1,0 +1,80 @@
+<resources>
+    <string name="app_name">Sunflower</string>
+
+    <!-- Navigation -->
+    <string name="nav_servers">Servers</string>
+    <string name="nav_subscriptions">Subscriptions</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_logs">Logs</string>
+    <string name="nav_reset">Reset</string>
+    <string name="nav_about">About</string>
+    <string name="cd_back">Back</string>
+
+    <!-- Servers -->
+    <string name="servers_empty">No servers available</string>
+    <string name="favorite_add">Add to favorites</string>
+    <string name="favorite_remove">Remove from favorites</string>
+    <string name="action_connect">Connect</string>
+    <string name="action_connecting">…</string>
+    <string name="action_disconnect">Disconnect</string>
+    <string name="server_summary">%1$s · %2$s:%3$d</string>
+
+    <!-- Subscriptions -->
+    <string name="action_add_subscription">Add subscription</string>
+    <string name="subscriptions_empty">You don\'t have any subscriptions yet</string>
+    <string name="subscription_update_failed">Failed to update subscription</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="action_delete">Delete</string>
+
+    <!-- Add subscription -->
+    <string name="label_name">Name</string>
+    <string name="name_counter">%1$d/%2$d</string>
+    <string name="clipboard_empty">Clipboard is empty.</string>
+    <string name="action_paste">Paste</string>
+    <string name="label_allow_insecure">Allow insecure connections</string>
+    <string name="warning_allow_insecure">Using insecure certificates reduces connection security.</string>
+    <string name="label_send_hwid_cookie">Send HWID in Cookie</string>
+    <string name="action_save">Save</string>
+
+    <!-- Settings -->
+    <string name="section_vpn_settings">VPN Settings</string>
+    <string name="label_kill_switch">Kill Switch</string>
+    <string name="label_allow_lan">Allow LAN connections</string>
+    <string name="label_auto_connect">Auto-connect on app launch</string>
+    <string name="section_autostart">Autostart</string>
+    <string name="label_autostart_on_boot">Start on device boot</string>
+    <string name="section_appearance">Appearance</string>
+    <string name="label_theme">Theme</string>
+    <string name="theme_system">System default</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="section_subscriptions">Subscriptions</string>
+    <string name="label_auto_update">Auto-update</string>
+    <string name="interval_never">Never</string>
+    <string name="interval_6h">Every 6 hours</string>
+    <string name="interval_12h">Every 12 hours</string>
+    <string name="interval_daily">Daily</string>
+
+    <!-- Logs -->
+    <string name="action_copy">Copy</string>
+    <string name="action_share">Share</string>
+    <string name="action_clear">Clear</string>
+    <string name="logs_empty">No logs yet</string>
+    <string name="share_logs_chooser_title">Share logs</string>
+
+    <!-- Reset -->
+    <string name="reset_settings_label">Reset settings</string>
+    <string name="reset_settings_message">Reset Kill Switch, Allow LAN, auto-connect and theme to defaults?</string>
+    <string name="reset_servers_label">Delete servers</string>
+    <string name="reset_servers_message">Delete ALL servers (including locally added ones)? This cannot be undone.</string>
+    <string name="reset_subscriptions_label">Delete subscriptions</string>
+    <string name="reset_subscriptions_message">Delete ALL subscriptions and their servers? This cannot be undone.</string>
+    <string name="reset_full_label">Full reset</string>
+    <string name="reset_full_message">Delete everything: settings, servers, subscriptions and logs? This cannot be undone.</string>
+    <string name="action_confirm">Confirm</string>
+    <string name="action_cancel">Cancel</string>
+
+    <!-- About -->
+    <string name="about_version">Version %1$s</string>
+    <string name="about_description">Client for user VPN/proxy subscriptions and configurations (VLESS/VMess/Trojan/Shadowsocks) over Xray-core.</string>
+</resources>
